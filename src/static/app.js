@@ -7,11 +7,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
-      const response = await fetch("/activities");
-      const activities = await response.json();
-
-      // Clear loading message
       activitiesList.innerHTML = "";
+
+      function createParticipantComponent(participants) {
+        if(participants.length === 0) {
+          return "<p><strong>Participants:</strong> No participants yet</p>";
+        }
+
+        const participantsList = participants
+            .map(participant => `<li>${participant}</li>`)
+            .join("");
+
+        return `
+            <p><strong>Participants:</strong></p>
+            <ul class="participants-list">
+            ${participantsList}
+            </ul>
+            `;
+      }
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
@@ -25,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <p><strong>Participants:</strong> ${
+            details.participants.length > 0
+              ? details.participants.join(", ")
+              : "No participants yet"
+          }</p>
         `;
 
         activitiesList.appendChild(activityCard);
@@ -40,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error fetching activities:", error);
     }
   }
-
   // Handle form submission
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();

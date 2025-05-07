@@ -144,12 +144,9 @@ button:hover {
 }
 
 .participants-list li {
-    margin-bottom: 5px;
-}
-
-.participants-list li {
-  background-color: #e3f2fd;
   margin: 5px 0;
+  margin-bottom: 5px; /* Retained for clarity */
+  background-color: #e3f2fd;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
